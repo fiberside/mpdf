@@ -3226,7 +3226,7 @@ function AddFont($family,$style='') {
 		}
 		else $s.='$haskerninfo=false;'."\n";
 		// mPDF 5.4.05
-		if ($this->fontdata[$family]['unAGlyphs']) { 
+		if (isset($this->fontdata[$family]['unAGlyphs']) && $this->fontdata[$family]['unAGlyphs']) {
 			$s.='$unAGlyphs=true;'."\n";
 		}
 		else $s.='$unAGlyphs=false;'."\n";
@@ -10653,11 +10653,11 @@ function file_get_contents_by_socket($url, &$data) {
 	$file = $p['path'];
 	if ($p['scheme']=='https') {
 		$prefix = 'ssl://';
-		$port = ($p['port'] ? $p['port'] : 443);
+		$port = (isset($p['port']) && $p['port'] ? $p['port'] : 443);
 	}
 	else {
 		$prefix = '';
-		$port = ($p['port'] ? $p['port'] : 80);
+		$port = (isset($p['port']) && $p['port'] ? $p['port'] : 80);
 	}
 	if ($p['query']) { $file .= '?'.$p['query']; }
 	if(!($fh = @fsockopen($prefix.$p['host'], $port, $errno, $errstr, $timeout))) { return false; }
@@ -11424,7 +11424,7 @@ function GetFullPath(&$path,$basepath='') {
 			$root = '';
 			if (!empty($tr['scheme'])) { $root .= $tr['scheme'].'://'; }
 			$root .= $tr['host'];
-			$root .= ($tr['port'] ? (':'.$tr['port']) : '');	// mPDF 5.7.3
+			$root .= (isset($tr['port']) && $tr['port'] ? (':'.$tr['port']) : '');	// mPDF 5.7.3
 			$path = $root . $path; 
 		}
 		else { $path = $basepath . $path; }
@@ -30573,7 +30573,7 @@ function magic_reverse_dir(&$chunk, $join=true, $dir) {
    if ($this->biDirectional)  {
 	// mPDF 5.4.05 Include PUA for non-indexed Arabic glyphs
 	$pregRTLchars = $this->pregRTLchars;
-	if ($this->CurrentFont['unAGlyphs']) { $pregRTLchars .= "\x{F500}-\x{F7FF}"; }
+	if (isset($this->CurrentFont['unAGlyphs']) && $this->CurrentFont['unAGlyphs']) { $pregRTLchars .= "\x{F500}-\x{F7FF}"; }
 
 	// Change Arabic + Persian. to Presentation Forms
 	if ($join) {
